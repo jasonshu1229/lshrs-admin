@@ -22,7 +22,8 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "release": "standard-version"
   },
   "eslintConfig": {
     "extends": [
@@ -52,7 +53,8 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "standard-version": "^9.5.0"
   },
   "config": {
     "commitizen": {
