@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.2...v0.1.3) (2023-05-08)
+
+
+### Features
+
+* 配置NotFound页面 ([87fe413](https://github.com/jasonshu1229/lshrs-admin/commit/87fe41394691017bb2f8a35035d0bde4caca3355))
+
 ### [0.1.2](///compare/v0.1.1...v0.1.2) (2023-05-08)
 
 
