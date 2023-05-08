@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.3...v0.1.4) (2023-05-08)
+
+
+### Features
+
+* 集成redux环境,编写useappselector和useappdispatch ([7a24cb8](https://github.com/jasonshu1229/lshrs-admin/commit/7a24cb8f492fb111df36c0be5e9db69bc6af5bf3))
+
 ### [0.1.3](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.2...v0.1.3) (2023-05-08)
 
 
