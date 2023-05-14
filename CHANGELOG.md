@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.5...v0.1.6) (2023-05-14)
+
+
+### Features
+
+* 添加Login模块,并声明非代码资源,如png模块,让ts识别 ([911b798](https://github.com/jasonshu1229/lshrs-admin/commit/911b79886bdf9c7f7a31f9ef48399d4685517461))
+
 ### [0.1.5](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.4...v0.1.5) (2023-05-14)
 
 
