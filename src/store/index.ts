@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -16,7 +16,11 @@ const persistedCounterReducer = persistReducer(persistConfig, counterReducer)
 const store = configureStore({
   reducer: {
     counter: persistedCounterReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false // 忽略检查 action 的 payload 是否是一个序列化的值
+    })
 })
 
 // 创建持久化 store
