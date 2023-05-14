@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import 'normalize.css'
 
 import '@/assets/css/index.less'
+import './index.css'
 
 import App from '@/App'
 import store from '@/store'
