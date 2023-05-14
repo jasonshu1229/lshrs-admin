@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.4...v0.1.5) (2023-05-14)
+
+
+### Features
+
+* 将redux数据持久化保存在本地,避免刷新后丢失状态 ([da3e530](https://github.com/jasonshu1229/lshrs-admin/commit/da3e53072a3318bddacb3a6dfad5a0d8bece584f))
+* 让App撑满全屏 ([65854f7](https://github.com/jasonshu1229/lshrs-admin/commit/65854f799d1b937871562a78f685fcb686496020))
+* 添加axios配置 ([ade54ed](https://github.com/jasonshu1229/lshrs-admin/commit/ade54edc05fa21a5ca65f59caf9f2c0ecd1c27d0))
+
 ### [0.1.4](https://github.com/jasonshu1229/lshrs-admin/compare/v0.1.3...v0.1.4) (2023-05-08)
 
 
