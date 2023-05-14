@@ -8,11 +8,14 @@ const counterSlice = createSlice({
     address: 'BeiJing'
   },
   reducers: {
+    incrementAction(state) {
+      state.count = state.count + 1
+    },
     changeMessageAction(state, { payload }) {
       state.message = payload
     }
   }
 })
 
-export const { changeMessageAction } = counterSlice.actions
+export const { incrementAction, changeMessageAction } = counterSlice.actions
 export default counterSlice.reducer

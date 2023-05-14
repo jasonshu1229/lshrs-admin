@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'antd'
 
 import { shallowAppEqual, useAppDispatch, useAppSelector } from '@/store/hooks'
-import { changeMessageAction } from '@/store/modules/counter'
+import { incrementAction, changeMessageAction } from '@/store/modules/counter'
 
 const Demo = () => {
   const { count, message, address } = useAppSelector(
@@ -15,6 +15,9 @@ const Demo = () => {
   )
 
   const dispatch = useAppDispatch()
+  const handleChangeCount = () => {
+    dispatch(incrementAction())
+  }
   const handleChangeMessage = () => {
     dispatch(changeMessageAction('哈哈哈哈哈哈哈'))
   }
@@ -24,6 +27,7 @@ const Demo = () => {
       <h2>当前计数：{count}</h2>
       <h2>message：{message}</h2>
       <h2>地址：{address}</h2>
+      <Button onClick={handleChangeCount}>修改count</Button>
       <Button type="primary" onClick={handleChangeMessage}>
         修改message
       </Button>

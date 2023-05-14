@@ -1,11 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
 import counterReducer from './modules/counter'
+
+// redux-persist 持久化配置
+const persistConfig = {
+  key: 'root', // 必须唯一
+  storage
+}
+
+// 持久化 counterReducer
+const persistedCounterReducer = persistReducer(persistConfig, counterReducer)
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer
+    counter: persistedCounterReducer
   }
 })
+
+// 创建持久化 store
+const persistor = persistStore(store)
 
 // 方法一：获取getState的返回值类型，是一个函数类型
 // const state = store.getState()
@@ -16,4 +31,4 @@ type GetStateFnType = typeof store.getState
 export type IRootState = ReturnType<GetStateFnType>
 export type DispatchType = typeof store.dispatch
 
-export default store
+export { store, persistor }
