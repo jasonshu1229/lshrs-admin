@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Input } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons'
+
+import { HOME_PATH } from '@/global/constants'
 
 const LoginForm = () => {
   const [form] = Form.useForm()
+  const [isloading, setIsLoading] = useState<boolean>(false)
+
+  const navigate = useNavigate()
 
   const onFinish = async (values: any) => {
+    try {
+      setIsLoading(true)
+      navigate(HOME_PATH)
+    } finally {
+      setIsLoading(false)
+    }
     console.log('onFinish', values)
   }
 
@@ -30,7 +42,12 @@ const LoginForm = () => {
         <Input placeholder="请输入密码" />
       </Form.Item>
       <Form.Item className="login-btn">
-        <Button type="primary" htmlType="submit" icon={<UserOutlined />}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isloading}
+          icon={<UserOutlined />}
+        >
           登录
         </Button>
         <Button
