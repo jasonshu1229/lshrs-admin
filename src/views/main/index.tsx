@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import { Layout, Menu, Button, theme } from 'antd'
+import { Layout, Button, theme } from 'antd'
 
 import LayoutMenu from './components/Menu'
+import Logo from './components/Menu/components/Logo'
 
 import './index.less'
 
@@ -15,14 +16,9 @@ const Main: React.FC = () => {
   } = theme.useToken()
 
   return (
-    <section className="container">
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        width={220}
-        theme="dark"
-      >
+    <Layout hasSider>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <Logo />
         <LayoutMenu />
       </Sider>
       <Layout>
@@ -49,7 +45,7 @@ const Main: React.FC = () => {
           Content
         </Content>
       </Layout>
-    </section>
+    </Layout>
   )
 }
 

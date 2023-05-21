@@ -1,8 +1,24 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
+import {
+  combineReducers,
+  configureStore,
+  getDefaultMiddleware
+} from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 import counterReducer from './modules/counter'
+import userSlice from './modules/user'
+
+const rootReducer = combineReducers({
+  counter: counterReducer,
+  user: persistReducer(
+    {
+      key: 'user',
+      storage
+    },
+    userSlice
+  )
+})
 
 // redux-persist 持久化配置
 const persistConfig = {
@@ -11,12 +27,10 @@ const persistConfig = {
 }
 
 // 持久化 counterReducer
-const persistedCounterReducer = persistReducer(persistConfig, counterReducer)
+const persistedCounterReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
-  reducer: {
-    counter: persistedCounterReducer
-  },
+  reducer: persistedCounterReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false // 忽略检查 action 的 payload 是否是一个序列化的值
