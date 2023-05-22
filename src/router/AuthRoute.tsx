@@ -10,16 +10,20 @@ import { rootRouter } from '@/router'
  * @returns
  */
 const AuthRoute = ({ children }: { children: JSX.Element }) => {
+  const { pathname } = useLocation()
+  const route = searchRoute(pathname, rootRouter)
+
+  // 当前路由不需要登录，直接返回该路由对应的组件
+  if (!route.meta?.requiresAuth) return children
+
+  // 判断是否有Token
   const token = useAppSelector((state) => state.user.token)
-  const location = useLocation()
-
-  const route = searchRoute(location.pathname, rootRouter)
-
-  if (token || location.pathname === '/login') {
-    return children
+  if (!token) {
+    return <Navigate to="/login" replace />
   }
 
-  return <Navigate to="/login" replace />
+  // 当前登录用户有权限访问该路由，返回该路由对应的组件
+  return children
 }
 
 export default AuthRoute
