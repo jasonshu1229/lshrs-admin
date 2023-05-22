@@ -6,6 +6,9 @@ import LayoutMenu from './components/Menu'
 import Logo from './components/Menu/components/Logo'
 
 import './index.less'
+import { LOGIN_PATH } from '@/global/constants'
+import { useNavigate } from 'react-router-dom'
+import { persistor } from '@/store'
 
 const { Header, Sider, Content } = Layout
 
@@ -14,6 +17,13 @@ const Main: React.FC = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken()
+
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    persistor.purge()
+    navigate(LOGIN_PATH)
+  }
 
   return (
     <Layout hasSider>
@@ -42,7 +52,7 @@ const Main: React.FC = () => {
             background: colorBgContainer
           }}
         >
-          Content
+          <button onClick={() => handleLogout()}>退出登录</button>
         </Content>
       </Layout>
     </Layout>

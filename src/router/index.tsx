@@ -1,23 +1,35 @@
 import React from 'react'
-import { RouteObject, Navigate } from 'react-router-dom'
+import { Navigate, useRoutes } from 'react-router-dom'
 
 import Login from '@/views/login'
 import Main from '@/views/main'
 import NotFound from '@/views/not-found'
 import Demo from '@/views/demo'
 
-const routes: RouteObject[] = [
+import { RouteObject } from '@/types/router'
+
+export const rootRouter: RouteObject[] = [
   {
     path: '/',
-    element: <Navigate to="/login" />
+    element: <Navigate to="/main" replace />
   },
   {
     path: '/login',
-    element: <Login />
+    element: <Login />,
+    meta: {
+      requiresAuth: false,
+      title: '登录页',
+      key: 'login'
+    }
   },
   {
     path: '/main',
-    element: <Main />
+    element: <Main />,
+    meta: {
+      requiresAuth: true,
+      title: '主页',
+      key: 'main'
+    }
   },
   {
     path: '/demo',
@@ -29,4 +41,9 @@ const routes: RouteObject[] = [
   }
 ]
 
-export default routes
+const Router = () => {
+  const routes = useRoutes(rootRouter)
+  return routes
+}
+
+export default Router

@@ -1,10 +1,14 @@
 import React from 'react'
 import { useRoutes } from 'react-router-dom'
 
-import routes from './router'
+import Router from '@/router'
 
 function App() {
-  return <div className="App">{useRoutes(routes)}</div>
+  return (
+    <div className="App">
+      <Router />
+    </div>
+  )
 }
 
 export default App

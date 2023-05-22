@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'normalize.css'
 
+import AuthRoute from '@/router/AuthRoute'
 import '@/assets/css/index.less'
 import './index.css'
 
@@ -17,7 +18,9 @@ root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <HashRouter>
-        <App />
+        <AuthRoute>
+          <App />
+        </AuthRoute>
       </HashRouter>
     </PersistGate>
   </Provider>

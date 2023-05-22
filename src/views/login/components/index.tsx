@@ -3,10 +3,11 @@ import { Button, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons'
 
-import { HOME_PATH } from '@/global/constants'
 import { Login } from '@/types/login'
+import { HOME_PATH, LOGIN_TOKEN } from '@/global/constants'
 import { fetchUserInfoAction } from '@/store/modules/user'
 import { shallowAppEqual, useAppDispatch, useAppSelector } from '@/store/hooks'
+import { localCache } from '@/utils/cache'
 
 const LoginForm = () => {
   const [form] = Form.useForm()
@@ -28,15 +29,18 @@ const LoginForm = () => {
       const name = values.name
       const password = values.password
 
-      dispatch(fetchUserInfoAction({ name, password }))
+      const resultAction = await dispatch(
+        fetchUserInfoAction({ name, password })
+      )
 
-      localStorage.setItem('token', token)
-
-      messageApi.open({
-        type: 'success',
-        content: '登录成功'
-      })
-      // navigate(HOME_PATH)
+      if (fetchUserInfoAction.fulfilled.match(resultAction)) {
+        localCache.setCache(LOGIN_TOKEN, token)
+        messageApi.open({
+          type: 'success',
+          content: '登录成功'
+        })
+        navigate(HOME_PATH)
+      }
     } finally {
       setIsLoading(false)
     }
