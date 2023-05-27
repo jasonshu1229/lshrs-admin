@@ -2,4 +2,7 @@
 
 export const HOME_PATH = '/main'
 export const LOGIN_PATH = '/login'
-export const LOGIN_TOKEN = 'login_token'
+
+export const CACHE_NAME = 'name'
+export const CACHE_PASSWORD = 'password'
+export const CACHE_TOKEN = 'token'

@@ -6,7 +6,7 @@ import { Login } from '@/types/login'
 export interface UserState {
   id: string
   name: string
-  token: string | undefined
+  token: string
 }
 
 const initialState: UserState = {
