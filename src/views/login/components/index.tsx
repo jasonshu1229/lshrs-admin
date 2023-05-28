@@ -1,58 +1,53 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, Form, Input, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { UserOutlined, CloseCircleOutlined } from '@ant-design/icons'
 
 import { Login } from '@/types/login'
+import { HOME_PATH } from '@/global/constants'
 import {
-  CACHE_NAME,
-  CACHE_PASSWORD,
-  HOME_PATH,
-  CACHE_TOKEN
-} from '@/global/constants'
-import { fetchUserInfoAction } from '@/store/modules/user'
+  changePassword,
+  changeRememberStatus,
+  changeUserNanme,
+  fetchUserInfoAction
+} from '@/store/modules/user'
 import { shallowAppEqual, useAppDispatch, useAppSelector } from '@/store/hooks'
-import { localCache } from '@/utils/cache'
 
 const LoginForm = () => {
   const [form] = Form.useForm()
   const [isloading, setIsLoading] = useState<boolean>(false)
-  const tokenRef = useRef<string>()
   const [messageApi, contextHolder] = message.useMessage()
   const dispatch = useAppDispatch()
-  tokenRef.current = useAppSelector(
-    (state) => state.user.token,
+
+  const { name, password, isRemember } = useAppSelector(
+    (state) => ({
+      name: state.user.name,
+      password: state.user.password,
+      isRemember: state.user.isRemember
+    }),
     shallowAppEqual
   )
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    const cacheName = localCache.getCache(CACHE_NAME)
-    const cachePassword = localCache.getCache(CACHE_PASSWORD)
-
-    if (cacheName && cachePassword) {
+    if (name && password) {
       form.setFieldsValue({
-        name: cacheName,
-        password: cachePassword
+        name: name,
+        password: password
       })
     }
-  }, [])
 
-  const onRememberPassword = (isRemember: boolean) => {
-    // if (isRemember) {
-    //   console.log('需要记住密码')
-    //   localCache.setCache(CACHE_NAME, name)
-    //   localCache.setCache(CACHE_PASSWORD, password)
-    // } else {
-    //   localCache.removeCache(CACHE_NAME)
-    //   localCache.removeCache(CACHE_PASSWORD)
-    // }
+    dispatch(changeRememberStatus(isRemember))
+  }, [name, password])
 
-    const method = isRemember ? 'setCache' : 'removeCache'
-    ;[CACHE_NAME, CACHE_PASSWORD].forEach((key) =>
-      localCache[method](key, isRemember ? form.getFieldValue(key) : null)
-    )
+  const handleRememberPassword = (
+    isRemember: boolean,
+    name: string,
+    password: string
+  ) => {
+    dispatch(changeUserNanme(isRemember ? name : ''))
+    dispatch(changePassword(isRemember ? password : ''))
   }
 
   const onFinish = async (values: Login.LoginParams) => {
@@ -67,8 +62,8 @@ const LoginForm = () => {
 
       if (fetchUserInfoAction.fulfilled.match(resultAction)) {
         // 判断是否需要记住用户的登录状态
-        onRememberPassword(isRemember)
-        localCache.setCache(CACHE_TOKEN, tokenRef.current)
+        handleRememberPassword(isRemember, name, password)
+        // 登陆成功后，store中已经存入 token
         messageApi.open({
           type: 'success',
           content: '登录成功'
@@ -93,11 +88,16 @@ const LoginForm = () => {
       form={form}
       name="basic"
       labelCol={{ span: 5 }}
-      initialValues={{ remember: true }}
+      initialValues={{ remember: isRemember }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       size="large"
+      onValuesChange={(changedValues) => {
+        if ('remember' in changedValues) {
+          dispatch(changeRememberStatus(changedValues.remember))
+        }
+      }}
     >
       {contextHolder}
       <Form.Item
@@ -109,6 +109,7 @@ const LoginForm = () => {
             pattern: /^[a-z0-9]{6,20}$/
           }
         ]}
+        validateTrigger="onSubmit"
       >
         <Input placeholder="请输入用户名" />
       </Form.Item>
@@ -121,6 +122,7 @@ const LoginForm = () => {
             pattern: /^[a-z0-9]{3,}$/
           }
         ]}
+        validateTrigger="onSubmit"
       >
         <Input placeholder="请输入密码" />
       </Form.Item>

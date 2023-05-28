@@ -6,11 +6,11 @@ import {
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import counterReducer from './modules/counter'
+// import counterReducer from './modules/counter'
 import userSlice from './modules/user'
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
+  // counter: counterReducer,
   user: persistReducer(
     {
       key: 'user',
@@ -23,7 +23,8 @@ const rootReducer = combineReducers({
 // redux-persist 持久化配置
 const persistConfig = {
   key: 'root', // 必须唯一
-  storage
+  storage,
+  blacklist: ['user'] // reducer 里不持久化的数据
 }
 
 // 持久化 counterReducer

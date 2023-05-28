@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Layout, Button, theme } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 import LayoutMenu from './components/Menu'
 import Logo from './components/Menu/components/Logo'
 
 import './index.less'
 import { LOGIN_PATH } from '@/global/constants'
-import { useNavigate } from 'react-router-dom'
 import { persistor } from '@/store'
+import { shallowAppEqual, useAppDispatch, useAppSelector } from '@/store/hooks'
+import { changeRememberStatus } from '@/store/modules/user'
 
 const { Header, Sider, Content } = Layout
 
@@ -19,9 +21,19 @@ const Main: React.FC = () => {
   } = theme.useToken()
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const isRemember = useAppSelector(
+    (state) => state.user.isRemember,
+    shallowAppEqual
+  )
 
   const handleLogout = () => {
-    persistor.purge()
+    if (!isRemember) {
+      persistor.purge()
+      return
+    }
+    dispatch(changeRememberStatus(isRemember))
     navigate(LOGIN_PATH)
   }
 

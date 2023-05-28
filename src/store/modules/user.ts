@@ -7,12 +7,16 @@ export interface UserState {
   id: string
   name: string
   token: string
+  isRemember: boolean
+  password: string
 }
 
 const initialState: UserState = {
   id: '',
   name: '',
-  token: ''
+  token: '',
+  isRemember: false,
+  password: ''
 }
 
 export const fetchUserInfoAction = createAsyncThunk(
@@ -38,9 +42,21 @@ export const userSlice = createSlice({
     },
     changeToken(state, { payload }) {
       state.token = payload
+    },
+    changeRememberStatus(state, { payload }) {
+      state.isRemember = payload
+    },
+    changePassword(state, { payload }) {
+      state.password = payload
     }
   }
 })
 
-export const { changeId, changeUserNanme, changeToken } = userSlice.actions
+export const {
+  changeId,
+  changeUserNanme,
+  changeToken,
+  changeRememberStatus,
+  changePassword
+} = userSlice.actions
 export default userSlice.reducer
