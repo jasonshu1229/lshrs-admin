@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { getUserInfoById, getUserLoginInfo } from '@/service/modules/login'
-import { Login } from '@/types/login'
+import {
+  getUserInfoById,
+  getUserLoginInfo,
+  getUserMenusByRoleId
+} from '@/service/modules/login'
+import { Login, User } from '@/types/login'
 
 export interface UserState {
   id: string
@@ -9,7 +13,8 @@ export interface UserState {
   token: string
   isRemember: boolean
   password: string
-  userInfo: Login.UserInfo
+  userInfo: User.UserInfo
+  userMenus: User.UserMenus
 }
 
 const initialState: UserState = {
@@ -18,7 +23,8 @@ const initialState: UserState = {
   token: '',
   isRemember: false,
   password: '',
-  userInfo: {}
+  userInfo: {},
+  userMenus: {}
 }
 
 export const fetchUserInfoAction = createAsyncThunk(
@@ -28,14 +34,24 @@ export const fetchUserInfoAction = createAsyncThunk(
     const res = await getUserLoginInfo(params)
     const { name, id, token } = res.data
 
+    console.log('token', token)
+
     // 2. 进行本地存储
     dispatch(changeId(id))
     dispatch(changeUserNanme(name))
     dispatch(changeToken(token))
 
-    // 3. 获取登录用户的详细信息（role信息）
+    // 3.1 获取登录用户的详细信息（role信息）
     const userInfoResult = await getUserInfoById(id)
     dispatch(changeUserInfo(userInfoResult.data))
+    console.log('getUserInfoById', userInfoResult.data)
+
+    // 3.2 根据角色请求用户的权限（菜单menus）
+    const userMenusResult = await getUserMenusByRoleId(
+      userInfoResult.data.role.id
+    )
+    dispatch(changeUserMenus(userMenusResult.data))
+    console.log('getUserMenusByRoleId', userMenusResult.data)
   }
 )
 
@@ -60,6 +76,9 @@ export const userSlice = createSlice({
     },
     changeUserInfo(state, { payload }) {
       state.userInfo = payload
+    },
+    changeUserMenus(state, { payload }) {
+      state.userMenus = payload
     }
   }
 })
@@ -70,6 +89,7 @@ export const {
   changePassword,
   changeToken,
   changeRememberStatus,
-  changeUserInfo
+  changeUserInfo,
+  changeUserMenus
 } = userSlice.actions
 export default userSlice.reducer
