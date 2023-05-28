@@ -4,4 +4,9 @@ export namespace Login {
     name: string
     password: string
   }
+  export interface UserInfo {
+    id?: string
+    name?: string
+    cellphone?: number
+  }
 }

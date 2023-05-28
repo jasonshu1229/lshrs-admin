@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { getUserInfo } from '@/service/modules/login'
+import { getUserInfoById, getUserLoginInfo } from '@/service/modules/login'
 import { Login } from '@/types/login'
 
 export interface UserState {
@@ -9,6 +9,7 @@ export interface UserState {
   token: string
   isRemember: boolean
   password: string
+  userInfo: Login.UserInfo
 }
 
 const initialState: UserState = {
@@ -16,17 +17,25 @@ const initialState: UserState = {
   name: '',
   token: '',
   isRemember: false,
-  password: ''
+  password: '',
+  userInfo: {}
 }
 
 export const fetchUserInfoAction = createAsyncThunk(
   'user/getUserInfo',
   async (params: Login.LoginParams, { dispatch }) => {
-    const res = await getUserInfo(params)
+    // 1. 账号登录，获取用户token信息
+    const res = await getUserLoginInfo(params)
     const { name, id, token } = res.data
+
+    // 2. 进行本地存储
     dispatch(changeId(id))
     dispatch(changeUserNanme(name))
     dispatch(changeToken(token))
+
+    // 3. 获取登录用户的详细信息（role信息）
+    const userInfoResult = await getUserInfoById(id)
+    dispatch(changeUserInfo(userInfoResult.data))
   }
 )
 
@@ -40,14 +49,17 @@ export const userSlice = createSlice({
     changeUserNanme(state, { payload }) {
       state.name = payload
     },
+    changePassword(state, { payload }) {
+      state.password = payload
+    },
     changeToken(state, { payload }) {
       state.token = payload
     },
     changeRememberStatus(state, { payload }) {
       state.isRemember = payload
     },
-    changePassword(state, { payload }) {
-      state.password = payload
+    changeUserInfo(state, { payload }) {
+      state.userInfo = payload
     }
   }
 })
@@ -55,8 +67,9 @@ export const userSlice = createSlice({
 export const {
   changeId,
   changeUserNanme,
+  changePassword,
   changeToken,
   changeRememberStatus,
-  changePassword
+  changeUserInfo
 } = userSlice.actions
 export default userSlice.reducer
